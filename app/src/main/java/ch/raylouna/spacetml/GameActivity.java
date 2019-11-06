@@ -1,14 +1,14 @@
 package ch.raylouna.spacetml;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.Activity;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game);
+        setContentView(new GameView(this));
     }
 }
