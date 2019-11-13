@@ -3,8 +3,6 @@ package ch.raylouna.spacetml;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -14,10 +12,16 @@ import android.view.SurfaceHolder;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEventListener {
     private SensorManager sensorManager; // Gestionnaire de capteurs
-    private Sensor gyroscope; // Capteur pour la rotation du téléphone (gyroscope)
+    private Sensor accelerometer;
+    private Sensor magnetometer;
+
+    private float[] accelerometerData = new float[3];
+    private float[] magnetometerData = new float[3];
 
     private GameThread thread;
     private Rocket rocket;
+
+    private final float THRUST_SENSITIVITY = 0.01f;
 
     public GameView(Context context) {
         super(context);
@@ -30,8 +34,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
         rocket = new Rocket(BitmapFactory.decodeResource(getResources(),R.drawable.spaceship));
 
         sensorManager = (SensorManager)context.getSystemService(Context.SENSOR_SERVICE);
-        gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-        sensorManager.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_NORMAL);
+
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
@@ -59,7 +67,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
         }
     }
 
-    public void update() {
+    public void update(float elapsedTime) {
+        rocket.update(elapsedTime);
     }
 
     @Override
@@ -76,15 +85,29 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
+
         Sensor sensor = sensorEvent.sensor;
 
-        if(sensor.getType() == Sensor.TYPE_GYROSCOPE) {
-            float x = sensorEvent.values[0];
-            float y = sensorEvent.values[1];
-            float z = sensorEvent.values[2];
-
-            rocket.setRotation(x);
+        switch (sensor.getType()) {
+            case Sensor.TYPE_ACCELEROMETER:
+                accelerometerData = sensorEvent.values.clone();
+                break;
+            case Sensor.TYPE_MAGNETIC_FIELD:
+                magnetometerData = sensorEvent.values.clone();
+                break;
+            default:
+                return;
         }
+
+        float[] rotationMatrix = new float[9];
+        boolean rotationOK = SensorManager.getRotationMatrix(rotationMatrix,null, accelerometerData, magnetometerData);
+        float orientationValues[] = new float[3];
+        if (rotationOK) {
+            SensorManager.getOrientation(rotationMatrix, orientationValues);
+        }
+
+        rocket.setRotation(orientationValues[2] * (180f / (float)Math.PI));
+        rocket.setThrustPower(THRUST_SENSITIVITY * (orientationValues[1] / (float)Math.PI));
     }
 
     @Override

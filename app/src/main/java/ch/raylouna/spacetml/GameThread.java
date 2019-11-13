@@ -22,25 +22,33 @@ public class GameThread extends Thread {
 
     @Override
     public void run() {
-        while (running) {
-            canvas = null;
 
-            try {
-                canvas = this.surfaceHolder.lockCanvas();
-                synchronized(surfaceHolder) {
-                    this.gameView.update();
-                    this.gameView.draw(canvas);
+        final float FLT_TIME_STEP_IN_SECONDS = 0.020f;
+
+        long lastUpdateTime = System.currentTimeMillis();
+        while (running) {
+            if(System.currentTimeMillis() - lastUpdateTime > FLT_TIME_STEP_IN_SECONDS * 1000) {
+                lastUpdateTime = System.currentTimeMillis();
+
+                canvas = null;
+                try {
+                    canvas = this.surfaceHolder.lockCanvas();
+                    synchronized(surfaceHolder) {
+                        this.gameView.update(FLT_TIME_STEP_IN_SECONDS);
+                        this.gameView.draw(canvas);
+                    }
                 }
-            }
-            catch (Exception e) {} finally {
-                if (canvas != null) {
-                    try {
-                        surfaceHolder.unlockCanvasAndPost(canvas);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                catch (Exception e) {} finally {
+                    if (canvas != null) {
+                        try {
+                            surfaceHolder.unlockCanvasAndPost(canvas);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
+
         }
     }
 }
