@@ -8,11 +8,26 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import ch.raylouna.spacetml.Road.RoadDifficulty;
+import ch.raylouna.spacetml.Road.RoadGenerator;
+import ch.raylouna.spacetml.Track.TrackDifficulty;
+import ch.raylouna.spacetml.Track.TrackGenerator;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        RoadGenerator.getInstance().setup(RoadDifficulty.MEDIUM);
+        TrackGenerator.getInstance().setup(TrackDifficulty.EASY);
+
+        for(int i = 0; i < 1000; i++){
+            System.out.print(i);
+            drawRoad((int)TrackGenerator.getInstance().next(0.5));
+            //drawRoad((int)RoadGenerator.getInstance().next(0.5));
+        }
+
         setContentView(R.layout.activity_main);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -46,5 +61,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(creditsIntent);
             }
         });
+
+
+    }
+
+    public void drawRoad(int amount){
+
+        for(int i = 0; i < amount; i++){
+
+            System.out.print('*');
+        }
+        System.out.println(' ');
     }
 }
