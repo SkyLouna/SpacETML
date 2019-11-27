@@ -42,13 +42,18 @@ public class Rocket {
 
         xVel += thrustPower * Math.cos(rotation) * dt;
         yVel -= thrustPower * Math.sin(rotation) * dt;
+
+        xVel *= 0.9;
+        yVel *= 0.9;
     }
 
-    public void setRotation(float newValue) {
-        rotation = newValue + 90;
+    public void setRotation(float rad) {
+        rotation = rad - (float)Math.PI / 2.f;
     }
 
-    public void setThrustPower(float newValue) { thrustPower = newValue; }
+    public void setThrustPower(float newValue) {
+        thrustPower = newValue;
+    }
 
     public void draw(Canvas canvas) {
         float width = canvas.getWidth() * rocketWidth;
@@ -57,7 +62,7 @@ public class Rocket {
         float x = canvas.getWidth() * xPos;
 
         canvas.save();
-        canvas.rotate(rotation, x ,y);
+        canvas.rotate(rotation * (180f / (float)Math.PI) + 90, x ,y);
         canvas.drawBitmap(img, null, new Rect((int)(x - width / 2),(int)(y - height / 2),(int)(x + width / 2),(int)(y + height / 2)), null);
         canvas.restore();
 

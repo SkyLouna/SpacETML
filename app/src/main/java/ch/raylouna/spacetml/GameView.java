@@ -7,6 +7,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
 
@@ -21,7 +22,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
     private GameThread thread;
     private Rocket rocket;
 
-    private final float THRUST_SENSITIVITY = 0.01f;
+    private final float THRUST_SENSITIVITY = 0.8f;
 
     public GameView(Context context) {
         super(context);
@@ -106,8 +107,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
             SensorManager.getOrientation(rotationMatrix, orientationValues);
         }
 
-        rocket.setRotation(orientationValues[2] * (180f / (float)Math.PI));
-        rocket.setThrustPower(THRUST_SENSITIVITY * (orientationValues[1] / (float)Math.PI));
+        rocket.setRotation(orientationValues[2]);
+
+        Log.d("", "" + orientationValues[1]);
+        rocket.setThrustPower(THRUST_SENSITIVITY * ((orientationValues[1] + (float)Math.PI / 2.f)));
     }
 
     @Override
