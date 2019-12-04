@@ -53,15 +53,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        final Intent gameOverIntent = new Intent(this, GameOverActivity.class);
+        Button devGameOverButton = this.findViewById(R.id.btnDEVGameOver);
+        devGameOverButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivity(gameOverIntent);
+            }
+        });
+
 
     }
-
-    public void drawRoad(int amount){
-
-        for(int i = 0; i < amount; i++){
-
-            System.out.print('*');
-        }
-        System.out.println(' ');
-    }
+    
 }

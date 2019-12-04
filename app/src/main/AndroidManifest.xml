@@ -9,10 +9,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CreditsActivity"></activity>
-        <activity android:name=".HighScoresActivity" android:theme="@style/AppTheme.Fullscreen" />
-        <activity android:name=".GameActivity" android:theme="@style/AppTheme.Fullscreen" />
-        <activity android:name=".MainActivity" android:theme="@style/AppTheme.Fullscreen">
+        <activity android:name=".GameOverActivity"></activity>
+        <activity android:name=".CreditsActivity" />
+        <activity
+            android:name=".HighScoresActivity"
+            android:theme="@style/AppTheme.Fullscreen" />
+        <activity
+            android:name=".GameActivity"
+            android:theme="@style/AppTheme.Fullscreen" />
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
