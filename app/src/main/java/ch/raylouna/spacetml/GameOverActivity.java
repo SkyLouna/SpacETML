@@ -2,19 +2,26 @@ package ch.raylouna.spacetml;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import ch.raylouna.spacetml.Helper.HSDatabaseHelper;
 
 public class GameOverActivity extends AppCompatActivity {
 
 
-    private int score;
+    private int score;          //User score
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_game_over);
 
         setScore(241);
@@ -33,7 +40,7 @@ public class GameOverActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                skipHighScores();
+                gotoMainView();
             }
         });
 
@@ -48,9 +55,31 @@ public class GameOverActivity extends AppCompatActivity {
 
     public void submitScore(){
 
+        EditText nameEdit = findViewById(R.id.etGOName);
+
+        String name = nameEdit.getText().toString().trim();
+
+        if(name.toCharArray().length == 0){
+            Toast.makeText(this,"Compléter le nom svp.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        HSDatabaseHelper dbHelper = new HSDatabaseHelper(this);
+        dbHelper.insertScore(name, score);
+
+        System.out.println("Name: -" + name + "-" + name.toCharArray().length);
+
+        this.gotoMainView();
     }
 
-    public void skipHighScores(){
+    /**
+     * Sends user to main view
+     */
+    public void gotoMainView(){
+        //Create intent to the main view
+        final Intent mainIntent = new Intent(this, MainActivity.class);
 
+        //Send user to main view
+        startActivity(mainIntent);
     }
 }
