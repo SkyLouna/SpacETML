@@ -3,6 +3,8 @@ package ch.raylouna.spacetml;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -45,6 +47,10 @@ public class HighScoresActivity extends AppCompatActivity {
 
         TextView tv = new TextView(this);
         tv.setText(score + " - " + name);
+        tv.setPadding(50,20,50,20);
+        tv.setTextColor(Color.parseColor("#F57F17"));
+        tv.setTypeface(Typeface.MONOSPACE);
+        tv.setTextSize(30F);
 
         LinearLayout linearLayout = findViewById(R.id.llHSScrollLayout);
         linearLayout.addView(tv);
