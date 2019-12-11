@@ -32,7 +32,7 @@ public class Rocket {
     public Rocket(Bitmap bmp) {
         rotation = 0;
 
-        xPos = 0.5f;
+        xPos = 0.25f;
         distanceFromStart = BOTTOM_POS;
 
         xVel = 0.0f;
@@ -99,4 +99,10 @@ public class Rocket {
     public float getDistance() {
         return distanceFromStart;
     }
+
+    /**
+     * Gives the distance from the left side of the screen
+     * @return X position as a percentage of the screen width
+     */
+    public float getXPos() {return xPos;}
 }

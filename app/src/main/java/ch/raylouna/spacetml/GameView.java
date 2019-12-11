@@ -12,6 +12,9 @@ import android.hardware.SensorManager;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
+import android.widget.TextView;
+
+import java.util.concurrent.TimeUnit;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEventListener {
     private SensorManager sensorManager; // Gestionnaire de capteurs
@@ -24,6 +27,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
     private GameThread thread;
     private Rocket rocket;
     private DrawableTrack track;
+
+    private final float TIME_BETWEEN_SCORE_UPDATES = 1.f;
+    private float timeTillNextScoreUpdate = 0.f;
 
     private final float THRUST_SENSITIVITY = 0.8f;
 
@@ -46,6 +52,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
 
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
+
+        //scoreTextView.bringToFront();
     }
 
     @Override
@@ -77,6 +85,28 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
         rocket.update(elapsedTime);
         track.updateGeneration(rocket.getDistance());
 
+        timeTillNextScoreUpdate -= elapsedTime;
+        if(timeTillNextScoreUpdate <= 0.f) {
+            //scoreTextView.setText("Score : " + (int)rocket.getDistance() * 17);
+            timeTillNextScoreUpdate = TIME_BETWEEN_SCORE_UPDATES;
+        }
+
+        float[] bounds = track.getTrackBoundsAt(rocket.getDistance());
+        if(bounds != null) {
+            float xPos = rocket.getXPos();
+            if(xPos > bounds[0] && xPos < bounds[1]) {
+
+            }
+            else {
+
+            }
+        }
+        else {
+            System.out.println("Error when checking for track boundaries");
+        }
+    }
+
+    private void GameOver() {
 
     }
 

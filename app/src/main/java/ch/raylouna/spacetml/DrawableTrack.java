@@ -17,7 +17,7 @@ public class DrawableTrack {
 
     private final float GENERATION_MARGIN_DISTANCE = 1.f;
     private final float SPACE_BETWEEN_POINTS = 0.05f;
-    private final float TRACK_WIDTH = 0.3f;
+    private final float TRACK_WIDTH = 0.5f;
 
     ArrayList<PointF> points;
 
@@ -47,7 +47,7 @@ public class DrawableTrack {
         }
 
         removeUnnecessaryPoints(rocketPos);
-        System.out.println("Nb pts : " + points.size());
+        //System.out.println("Nb pts : " + points.size());
     }
 
     private PointF generateNextPoint() {
@@ -69,9 +69,11 @@ public class DrawableTrack {
             if(Math.abs(rocketPos - p.y) <= SPACE_BETWEEN_POINTS) {
                 float[] array = new float[2];
                 array[0] = p.x;
-                array[1] = p.x + SPACE_BETWEEN_POINTS;
+                array[1] = p.x + TRACK_WIDTH;
+                return array;
             }
         }
+        return null;
     }
 
     /**
