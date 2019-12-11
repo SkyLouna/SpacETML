@@ -27,6 +27,7 @@
                 android:textColor="#FFEB3B"
                 android:textSize="50sp"
                 android:textStyle="bold" />
+
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
