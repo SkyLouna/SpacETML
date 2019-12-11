@@ -1,6 +1,7 @@
 package ch.raylouna.spacetml;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -33,6 +34,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
 
     private final float THRUST_SENSITIVITY = 0.8f;
 
+    private boolean isGameOver;
+
     public GameView(Context context) {
         super(context);
 
@@ -54,6 +57,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
         sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
 
         //scoreTextView.bringToFront();
+
+        isGameOver = false;
     }
 
     @Override
@@ -82,6 +87,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
     }
 
     public void update(float elapsedTime) {
+        if(isGameOver) {
+           return;
+        }
         rocket.update(elapsedTime);
         track.updateGeneration(rocket.getDistance());
 
@@ -95,9 +103,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
         if(bounds != null) {
             float xPos = rocket.getXPos();
             if(xPos > bounds[0] && xPos < bounds[1]) {
-
             }
             else {
+                GameOver();
 
             }
         }
@@ -106,8 +114,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
         }
     }
 
-    private void GameOver() {
+    private int computeCurrentScore() {
+        return (int)rocket.getDistance() * 17;
+    }
 
+    private void GameOver() {
+        isGameOver = true;
+
+        //Init the game over view intent
+        final Intent gameOverIntent = new Intent(this.getContext(), GameOverActivity.class);
+        //Add the score to the flag "score"
+        gameOverIntent.putExtra("score", computeCurrentScore());
+        //Start the game over activity
+        this.getContext().startActivity(gameOverIntent);
     }
 
     @Override
