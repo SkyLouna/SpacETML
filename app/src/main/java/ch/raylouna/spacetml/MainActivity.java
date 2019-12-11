@@ -64,18 +64,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //Create a dev intent and add event listener with activity redirection
+
+    }
+
+    public void sendToGameOver(){
+        //Init the game over view intent
         final Intent gameOverIntent = new Intent(this, GameOverActivity.class);
-        Button devGameOverButton = this.findViewById(R.id.btnDEVGameOver);
-        devGameOverButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                startActivity(gameOverIntent);
-            }
-        });
-
-
+        //Add the score to the flag "score"
+        gameOverIntent.putExtra("score", 310);
+        //Start the game over activity
+        startActivity(gameOverIntent);
     }
     
 }

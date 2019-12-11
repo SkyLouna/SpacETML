@@ -70,8 +70,10 @@ public class DrawableTrack {
                 float[] array = new float[2];
                 array[0] = p.x;
                 array[1] = p.x + SPACE_BETWEEN_POINTS;
+                return array;
             }
         }
+        return null;
     }
 
     /**

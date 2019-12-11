@@ -8,17 +8,6 @@
     android:background="@drawable/stars_background"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/btnDEVGameOver"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="90dp"
-        android:text="DEV - GO"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="300dp"
