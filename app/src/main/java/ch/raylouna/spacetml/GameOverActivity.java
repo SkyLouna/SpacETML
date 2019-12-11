@@ -21,10 +21,10 @@ public class GameOverActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_game_over);
 
-        setScore(241);
+        Intent intent = getIntent();
+        setScore(intent.getIntExtra("score", 0));
 
         Button saveHighScore = this.findViewById(R.id.btnGOSave);
         saveHighScore.setOnClickListener(new View.OnClickListener() {
