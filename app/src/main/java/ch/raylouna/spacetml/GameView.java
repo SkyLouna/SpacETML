@@ -76,6 +76,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
     public void update(float elapsedTime) {
         rocket.update(elapsedTime);
         track.updateGeneration(rocket.getDistance());
+
+
     }
 
     @Override

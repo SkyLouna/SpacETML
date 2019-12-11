@@ -17,6 +17,7 @@ public class DrawableTrack {
 
     private final float GENERATION_MARGIN_DISTANCE = 1.f;
     private final float SPACE_BETWEEN_POINTS = 0.05f;
+    private final float TRACK_WIDTH = 0.3f;
 
     ArrayList<PointF> points;
 
@@ -50,7 +51,7 @@ public class DrawableTrack {
     }
 
     private PointF generateNextPoint() {
-        return new PointF((float)TrackGenerator.getInstance().nextNormalized(0.5), getLastPoint().y + SPACE_BETWEEN_POINTS);
+        return new PointF((float)TrackGenerator.getInstance().nextNormalized(0.5) * (1-TRACK_WIDTH), getLastPoint().y + SPACE_BETWEEN_POINTS);
     }
 
     /**
@@ -60,6 +61,16 @@ public class DrawableTrack {
     private void removeUnnecessaryPoints(float rocketPos) {
         while(getLastPoint().y < (rocketPos - Rocket.BOTTOM_POS)) {
             points.remove(points.size());
+        }
+    }
+
+    public float[] getTrackBoundsAt(float rocketPos) {
+        for(PointF p : points) {
+            if(Math.abs(rocketPos - p.y) <= SPACE_BETWEEN_POINTS) {
+                float[] array = new float[2];
+                array[0] = p.x;
+                array[1] = p.x + SPACE_BETWEEN_POINTS;
+            }
         }
     }
 
@@ -73,13 +84,16 @@ public class DrawableTrack {
         p.setColor(Color.rgb(255,0,0));
 
         for(int i = 0; i < points.size(); ++i){
-            PointF current = points.get(i);
-            float x = current.x * c.getWidth();
-            float y = Rocket.BOTTOM_POS - (rocketDistance - current.y);
+            PointF left = points.get(i);
+            float x = left.x * c.getWidth();
+            float y = Rocket.BOTTOM_POS - (rocketDistance - left.y);
             y *= c.getHeight();
             y = c.getHeight() - y;
 
-            c.drawCircle(x, y, 3.f, p);
+            c.drawCircle(x, y, 10.f, p);
+
+            PointF right = new PointF(x + TRACK_WIDTH * c.getWidth(), y);
+            c.drawCircle(right.x, right.y, 10.f, p);
         }
     }
 }

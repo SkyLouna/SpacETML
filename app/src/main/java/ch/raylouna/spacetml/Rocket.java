@@ -56,8 +56,8 @@ public class Rocket {
         xVel += thrustPower * Math.cos(rotation) * dt;
         yVel -= thrustPower * Math.sin(rotation) * dt;
 
-        xVel *= 0.9;
-        yVel *= 0.9;
+        xVel *= 0.95;
+        yVel *= 0.95;
     }
 
     /**
