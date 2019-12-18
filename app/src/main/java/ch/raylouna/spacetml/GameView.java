@@ -13,6 +13,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PointF;
+import android.graphics.RectF;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -20,9 +22,10 @@ import android.hardware.SensorManager;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
-import android.widget.TextView;
 
-import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEventListener {
     private SensorManager sensorManager; // Gestionnaire de capteurs
@@ -41,11 +44,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
     private boolean isGameOver;
 
     private float timeLeft;
+    private float lastBonusPos;
+
+    private List<TimeBonus> timeBonuses;
 
     //Paints
     Paint scorePaint;
     Paint timePaint;
-
+    Paint bonusPaint;
 
     public GameView(Context context) {
         super(context);
@@ -71,7 +77,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
 
         isGameOver = false;
 
-        this.timeLeft = 1500;
+
+        timeBonuses = new ArrayList<>();
+        lastBonusPos = 1.f;
+
+        this.timeLeft = 15;
 
         scorePaint = new Paint();
         scorePaint.setColor(Color.rgb(120,0,120));
@@ -80,6 +90,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
         timePaint = new Paint();
         timePaint.setColor(Color.rgb(61,183,228));
         timePaint.setTextSize(90);
+
+        bonusPaint = new Paint();
+        bonusPaint.setColor(Color.rgb(0,100,0));
     }
 
     @Override
@@ -136,6 +149,48 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
         else {
             System.out.println("Error when checking for track boundaries");
         }
+
+        checkForCollisionsWithBonuses();
+
+        updateBonuses();
+    }
+
+    private void checkForCollisionsWithBonuses() {
+        for(int i = 0; i < timeBonuses.size(); ++i) {
+            TimeBonus b = timeBonuses.get(i);
+            if(b.rocketIntersects(new PointF(rocket.getXPos(), rocket.getDistance()))) {
+                timeLeft += 7.f;
+                timeBonuses.remove(i);
+                return;
+            }
+        }
+    }
+
+    private void updateBonuses() {
+        for(int i = 0; i < timeBonuses.size(); ++i) {
+            TimeBonus current = timeBonuses.get(i);
+            if(current.getPos().y <= rocket.getDistance() - 1.f) {
+                timeBonuses.remove(i);
+            }
+        }
+
+        if(timeBonuses.size() <= 1) {
+            generateNewBonuses();
+        }
+    }
+
+    private void generateNewBonuses() {
+        for(int i = 0; i < 5; ++i) {
+            float yPos = lastBonusPos + (i+1) * TimeBonus.SPACE_BETWEEN_TIME_BONUSES;
+
+            Random r = new Random();
+            int rand = r.nextInt(100);
+            float xPos = 0.1f + (float)rand / 100.f * 0.8f;
+
+            timeBonuses.add(new TimeBonus(xPos, yPos));
+        }
+
+        lastBonusPos = timeBonuses.get(timeBonuses.size() - 1).getPos().y;
     }
 
     private float computeCurrentScore() {
@@ -155,16 +210,25 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
 
     @Override
     public void draw(Canvas canvas) {
-
         super.draw(canvas);
         rocket.draw(canvas);
         track.draw(canvas, rocket.getDistance());
 
         String scoreText = "Score : " + Math.round(computeCurrentScore());
         canvas.drawText(scoreText, 10, 100, scorePaint);
-
         String timeText = "Temps : " + Math.round(this.timeLeft);
         canvas.drawText(timeText, 10, canvas.getHeight() - 100, timePaint);
+
+        float bonusWidth = TimeBonus.TIME_BONUS_WIDTH * (float)canvas.getWidth();
+        for(TimeBonus b : timeBonuses) {
+            PointF pos = b.getPos();
+            float x = pos.x * canvas.getWidth();
+            float y = Rocket.BOTTOM_POS - (rocket.getDistance() - pos.y);
+            y *= canvas.getHeight();
+            y = canvas.getHeight() - y;
+
+            canvas.drawRect(new RectF(x,y, x + (float)bonusWidth, y - (float)bonusWidth), bonusPaint);
+        }
     }
 
     @Override

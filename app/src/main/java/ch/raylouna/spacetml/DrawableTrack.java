@@ -21,9 +21,9 @@ import ch.raylouna.spacetml.Track.TrackGenerator;
  */
 public class DrawableTrack {
 
-    private final float GENERATION_MARGIN_DISTANCE = 1.f;
-    private final float SPACE_BETWEEN_POINTS = 0.05f;
-    private final float TRACK_WIDTH = 0.5f;
+    private static final float GENERATION_MARGIN_DISTANCE = 1.f;
+    private static final float SPACE_BETWEEN_POINTS = 0.05f;
+    public static final float TRACK_WIDTH = 0.5f;
 
     ArrayList<PointF> points;
 
