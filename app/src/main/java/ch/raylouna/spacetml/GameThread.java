@@ -10,12 +10,20 @@ package ch.raylouna.spacetml;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
+/**
+ * Main thread on which the game must run.
+ */
 public class GameThread extends Thread {
     private SurfaceHolder surfaceHolder;
     private GameView gameView;
     private boolean running;
     public static Canvas canvas;
 
+    /**
+     * Constructs a new GameThread
+     * @param surfaceHolder SurfaceHolder to draw on
+     * @param gameView The game view
+     */
     public GameThread(SurfaceHolder surfaceHolder, GameView gameView) {
         super();
 
@@ -23,10 +31,17 @@ public class GameThread extends Thread {
         this.gameView = gameView;
     }
 
+    /**
+     * Sets the state of the thread.
+     * @param newState new state
+     */
     public void setRunningState(boolean newState) {
         running = newState;
     }
 
+    /**
+     * Starts the thread.
+     */
     @Override
     public void run() {
 
@@ -55,7 +70,6 @@ public class GameThread extends Thread {
                     }
                 }
             }
-
         }
     }
 }

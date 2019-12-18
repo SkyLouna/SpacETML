@@ -4,7 +4,6 @@
  * Description:
  */
 
-
 package ch.raylouna.spacetml;
 
 import android.content.Context;
@@ -27,6 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Main class for the game.
+ */
 public class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEventListener {
     private SensorManager sensorManager; // Gestionnaire de capteurs
     private Sensor accelerometer;
@@ -53,6 +55,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
     Paint timePaint;
     Paint bonusPaint;
 
+    /**
+     * Constructs a new GameView
+     * @param context Context of the parent activity
+     */
     public GameView(Context context) {
         super(context);
 
@@ -95,17 +101,28 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
         bonusPaint.setColor(Color.rgb(0,100,0));
     }
 
+    /**
+     * Called when a new surface is created
+     * @param surfaceHolder Surface holder
+     */
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         thread.setRunningState(true);
         thread.start();
     }
 
+    /**
+     * Called when a surface is changed
+     */
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
 
     }
 
+    /**
+     * Called when a surface is destroyed
+     * @param surfaceHolder
+     */
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         boolean retry = true;
@@ -120,6 +137,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
         }
     }
 
+    /**
+     * Updates the game data
+     * @param elapsedTime delta time since last update
+     */
     public void update(float elapsedTime) {
         if(isGameOver) {
            return;
@@ -155,6 +176,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
         updateBonuses();
     }
 
+    /**
+     * Checks for collisions between the rocket and the time bonuses
+     */
     private void checkForCollisionsWithBonuses() {
         for(int i = 0; i < timeBonuses.size(); ++i) {
             TimeBonus b = timeBonuses.get(i);
@@ -166,6 +190,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
         }
     }
 
+    /**
+     * Update the bonuses list. Destroys useless bonuses and add new bonuses if necessary
+     */
     private void updateBonuses() {
         for(int i = 0; i < timeBonuses.size(); ++i) {
             TimeBonus current = timeBonuses.get(i);
@@ -179,6 +206,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
         }
     }
 
+    /**
+     * Generate 5 new bonuses in front of the last bonus
+     */
     private void generateNewBonuses() {
         for(int i = 0; i < 5; ++i) {
             float yPos = lastBonusPos + (i+1) * TimeBonus.SPACE_BETWEEN_TIME_BONUSES;
@@ -193,10 +223,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
         lastBonusPos = timeBonuses.get(timeBonuses.size() - 1).getPos().y;
     }
 
+    /**
+     * Computes the current score from the current distance of the rocket
+     * @return The score, as a float
+     */
     private float computeCurrentScore() {
         return rocket.getDistance() * 17;
     }
 
+    /**
+     * Ends the game. Must be called when the player loses.
+     */
     private void GameOver() {
         isGameOver = true;
 
@@ -208,6 +245,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
         this.getContext().startActivity(gameOverIntent);
     }
 
+    /**
+     * Draws the game on the given canvas
+     * @param canvas Canvas to draw on
+     */
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
@@ -231,6 +272,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
         }
     }
 
+    /**
+     * Called when a sensor is changed. Inherited
+     * @param sensorEvent Event
+     */
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
 
@@ -260,8 +305,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
         rocket.setThrustPower(THRUST_SENSITIVITY * ((orientationValues[1] + (float)Math.PI / 2.f)));
     }
 
+    /**
+     * Called when the accuracy of a sensor is changed.
+     * @param sensor Sensor whose accuracy has changed.
+     */
     @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
-
-    }
+    public void onAccuracyChanged(Sensor sensor, int i) { }
 }
