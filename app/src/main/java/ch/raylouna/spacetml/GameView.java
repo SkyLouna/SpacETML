@@ -36,14 +36,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
     private Rocket rocket;
     private DrawableTrack track;
 
-    private final float TIME_BETWEEN_SCORE_UPDATES = 0.1f;
-    private float timeTillNextScoreUpdate = 0.f;
-
     private final float THRUST_SENSITIVITY = 2.5f;
 
     private boolean isGameOver;
 
     private float timeLeft;
+
+    //Paints
+    Paint scorePaint;
+    Paint timePaint;
+
 
     public GameView(Context context) {
         super(context);
@@ -68,6 +70,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
         //scoreTextView.bringToFront();
 
         isGameOver = false;
+
+        this.timeLeft = 15;
+
+        scorePaint = new Paint();
+        scorePaint.setColor(Color.rgb(120,0,120));
+        scorePaint.setTextSize(90);
+
+        timePaint = new Paint();
+        timePaint.setColor(Color.rgb(61,183,228));
+        timePaint.setTextSize(90);
     }
 
     @Override
@@ -102,10 +114,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
         rocket.update(elapsedTime);
         track.updateGeneration(rocket.getDistance());
 
-        timeTillNextScoreUpdate -= elapsedTime;
-        if(timeTillNextScoreUpdate <= 0.f) {
-            //scoreTextView.setText("Score : " + (int)rocket.getDistance() * 17);
-            timeTillNextScoreUpdate = TIME_BETWEEN_SCORE_UPDATES;
+        this.timeLeft-=0.02f;
+
+        //If time's up
+        if(this.timeLeft <= 0){
+            GameOver();
+            return;
+
         }
 
         float[] bounds = track.getTrackBoundsAt(rocket.getDistance());
@@ -115,7 +130,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
             }
             else {
                 GameOver();
-
+                return;
             }
         }
         else {
@@ -145,11 +160,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
         rocket.draw(canvas);
         track.draw(canvas, rocket.getDistance());
 
-        Paint p = new Paint();
-        p.setColor(Color.rgb(120,0,120));
-        p.setTextSize(90);
-        String text = "Score : " + Math.round(computeCurrentScore());
-        canvas.drawText(text, 10, 100, p);
+        String scoreText = "Score : " + Math.round(computeCurrentScore());
+        canvas.drawText(scoreText, 10, 100, scorePaint);
+
+        String timeText = "Temps : " + Math.round(this.timeLeft);
+        canvas.drawText(timeText, 10, canvas.getHeight() - 100, timePaint);
     }
 
     @Override
