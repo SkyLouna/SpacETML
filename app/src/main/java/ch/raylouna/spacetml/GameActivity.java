@@ -1,7 +1,6 @@
 /**
  * ETML
  * Author: Lucas Charbonnier & Trana Valentin
- * Description:
  */
 
 
@@ -18,6 +17,5 @@ public class GameActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(new GameView(this));
-        //((TextView) findViewById(R.id.gameScore)).setText("Test");
     }
 }
