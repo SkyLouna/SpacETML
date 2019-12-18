@@ -1,7 +1,6 @@
 /**
  * ETML
  * Author: Lucas Charbonnier & Trana Valentin
- * Description:
  */
 
 
@@ -60,6 +59,10 @@ public class DrawableTrack {
         //System.out.println("Nb pts : " + points.size());
     }
 
+    /**
+     * Generates the next point
+     * @return
+     */
     private PointF generateNextPoint() {
         return new PointF((float)TrackGenerator.getInstance().nextNormalized(0.5) * (1-TRACK_WIDTH), getLastPoint().y + SPACE_BETWEEN_POINTS);
     }
@@ -74,6 +77,11 @@ public class DrawableTrack {
         }
     }
 
+    /**
+     * Gets the track at the rocket position
+     * @param rocketPos
+     * @return
+     */
     public float[] getTrackBoundsAt(float rocketPos) {
         for(PointF p : points) {
             if(Math.abs(rocketPos - p.y) <= SPACE_BETWEEN_POINTS) {

@@ -71,7 +71,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
 
         isGameOver = false;
 
-        this.timeLeft = 15;
+        this.timeLeft = 1500;
 
         scorePaint = new Paint();
         scorePaint.setColor(Color.rgb(120,0,120));

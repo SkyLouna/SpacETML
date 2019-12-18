@@ -1,7 +1,6 @@
 /**
  * ETML
  * Author: Lucas Charbonnier & Trana Valentin
- * Description:
  */
 
 
@@ -18,6 +17,8 @@ public class CreditsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_credits);
+
+        //Swt window full screen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 }

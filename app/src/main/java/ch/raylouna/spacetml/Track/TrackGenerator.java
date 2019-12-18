@@ -73,6 +73,7 @@ public class TrackGenerator {
      * @return
      */
     public double next(double alpha){
+        //Increment x
         x+= alpha;
 
         return (Math.sin(x*0.3)*1.4 + Math.sin(x*0.2)*0.2 + Math.cos(x*0.1) *1.7) * trackDifficulty.getHeight() + (trackDifficulty.getHeight() * 3);
@@ -84,6 +85,7 @@ public class TrackGenerator {
      * @return
      */
     public double nextNormalized(double alpha){
+        //Increment x
         x+= alpha;
 
         double y = (Math.sin(x*0.3)*1.4 + Math.sin(x*0.2)*0.2 + Math.cos(x*0.1) *1.7) + 3.3;
