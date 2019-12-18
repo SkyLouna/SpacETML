@@ -1,19 +1,21 @@
-package ch.raylouna.spacetml;
+/**
+ * ETML
+ * Author: Lucas Charbonnier & Trana Valentin
+ * Description:
+ */
 
-import androidx.appcompat.app.AppCompatActivity;
+
+package ch.raylouna.spacetml;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import ch.raylouna.spacetml.Helper.HSDatabaseHelper;
-import ch.raylouna.spacetml.Road.RoadDifficulty;
-import ch.raylouna.spacetml.Road.RoadGenerator;
-import ch.raylouna.spacetml.Track.TrackDifficulty;
-import ch.raylouna.spacetml.Track.TrackGenerator;
 
 public class MainActivity extends AppCompatActivity {
 

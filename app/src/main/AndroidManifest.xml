@@ -16,7 +16,10 @@
             android:theme="@style/AppTheme.Fullscreen" />
         <activity
             android:name=".GameActivity"
-            android:theme="@style/AppTheme.Fullscreen" />
+            android:theme="@style/AppTheme.Fullscreen"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.Fullscreen">
