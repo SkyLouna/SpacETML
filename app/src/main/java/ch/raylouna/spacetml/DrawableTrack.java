@@ -26,7 +26,10 @@ public class DrawableTrack {
      */
     public DrawableTrack(){
         points = new ArrayList<>();
-        points.add(new PointF(0f,0f));
+
+        for(int i = 0; i < 10; ++i) {
+            points.add(new PointF(0.2f, i * SPACE_BETWEEN_POINTS));
+        }
     }
 
     /**
@@ -92,10 +95,11 @@ public class DrawableTrack {
             y *= c.getHeight();
             y = c.getHeight() - y;
 
-            c.drawCircle(x, y, 10.f, p);
-
             PointF right = new PointF(x + TRACK_WIDTH * c.getWidth(), y);
-            c.drawCircle(right.x, right.y, 10.f, p);
+            if(i != points.size() - 1) {
+                c.drawLine(x, y, points.get(i+1).x * c.getWidth(), y - SPACE_BETWEEN_POINTS * c.getHeight(), p);
+                c.drawLine(right.x, y, (points.get(i+1).x + TRACK_WIDTH) * c.getWidth(), y - SPACE_BETWEEN_POINTS * c.getHeight(), p);
+            }
         }
     }
 }

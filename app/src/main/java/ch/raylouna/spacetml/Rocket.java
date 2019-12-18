@@ -73,7 +73,7 @@ public class Rocket {
      * @param newValue Thrust power
      */
     public void setThrustPower(float newValue) {
-        thrustPower = newValue;
+        thrustPower = Math.abs(newValue);
     }
 
     /**

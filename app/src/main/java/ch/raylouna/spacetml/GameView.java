@@ -29,12 +29,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
     private Rocket rocket;
     private DrawableTrack track;
 
-    private final float TIME_BETWEEN_SCORE_UPDATES = 1.f;
+    private final float TIME_BETWEEN_SCORE_UPDATES = 0.1f;
     private float timeTillNextScoreUpdate = 0.f;
 
-    private final float THRUST_SENSITIVITY = 0.8f;
+    private final float THRUST_SENSITIVITY = 2.5f;
 
     private boolean isGameOver;
+
+    private float timeLeft;
 
     public GameView(Context context) {
         super(context);
@@ -114,8 +116,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
         }
     }
 
-    private int computeCurrentScore() {
-        return (int)rocket.getDistance() * 17;
+    private float computeCurrentScore() {
+        return rocket.getDistance() * 17;
     }
 
     private void GameOver() {
@@ -124,7 +126,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
         //Init the game over view intent
         final Intent gameOverIntent = new Intent(this.getContext(), GameOverActivity.class);
         //Add the score to the flag "score"
-        gameOverIntent.putExtra("score", computeCurrentScore());
+        gameOverIntent.putExtra("score", (int) computeCurrentScore());
         //Start the game over activity
         this.getContext().startActivity(gameOverIntent);
     }
@@ -135,6 +137,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Sen
         super.draw(canvas);
         rocket.draw(canvas);
         track.draw(canvas, rocket.getDistance());
+
+        Paint p = new Paint();
+        p.setColor(Color.rgb(120,0,120));
+        p.setTextSize(90);
+        String text = "Score : " + Math.round(computeCurrentScore());
+        canvas.drawText(text, 10, 100, p);
     }
 
     @Override
