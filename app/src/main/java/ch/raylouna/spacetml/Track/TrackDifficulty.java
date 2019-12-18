@@ -1,3 +1,10 @@
+/**
+ * ETML
+ * Author: Lucas Charbonnier & Trana Valentin
+ * Description:
+ */
+
+
 package ch.raylouna.spacetml.Track;
 
 public enum TrackDifficulty {
